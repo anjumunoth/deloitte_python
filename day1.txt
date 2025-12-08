@@ -1,0 +1,220 @@
+FAST API
+
+What is API ?
+	-- App Programming Interface
+	-- Connect server to UI, 
+	-- Implement security, authentication, authorisation
+	-- Real time Implementation
+	-- Mode of communication 
+		--b/w client and server, 
+		--b/w different applications
+		--b/w different services
+	-- way to interact with others/ bridge
+	-- service providers
+	-- endpoints, request, api process the request, response
+	-- request 
+		-- http or https request
+		-- host url
+		-- type of request method (GET or POST)
+		-- path, query params, body
+		-- request headers
+			-- bearer token 
+			-- content-type 
+			-- accept-content 
+	-- response
+		-- status code -- Mandatory
+			-- 2xx -- Success , Object creation success
+			-- 3xx -- Redirects
+			-- 4xx -- Failure, forbidden , page not found, unauthorised
+			-- 500 Internal server error -- error at the api side
+		-- content-type 
+			-- response data -- data type
+			-- json (string, list of objects, )
+			-- text
+			-- xml
+			-- html
+			-- files
+		-- data
+			-- Optional
+		-- response header -- Mandatory
+			-- 
+
+
+
+
+Authentication -- who are u
+Authorisation -- what permissions the user has
+
+
+bearer token 
+registered user -- login page -- credentials -- login button -- request -- server -- validate the credentials -- validated -- server response will have 200 status code and auth token -- client -- next request -- send this token as part of every request -- server -- authenticate the token -- valid, not expired -- process the request and respective response
+invalid token -- auth failed -- response -- status code -- auth failed
+valid expired token -- resend a refresh token 
+
+Content type 
+	-- what type of data u are sending as part of request
+	-- json, xml
+	-- json --REST API -- Representation state transfer protocol
+	-- xml -- SOAP -- semi structured data ; followed a tag structure -- Simple Object Access Protocol
+
+Api -- receive the request, process the request and send the response
+
+
+IPL match
+	-- app 
+		-- stream the video
+			-- live data is captured --chunked -- streamed to the clients 
+			
+	-- you tube
+		-- response data is broken into chunks -- various chunks will keep coming at intervals of time -- buffering -- 
+
+	logged into the app -- selected the live match link -- request for that video -- only one request -- many responses(streamed response)
+
+cric info -- live scores
+		-- open the app or web page -- select the match -- see the live scores -- open the link -- scores come in; after some time interval -- again the live scores -- server at regular intervals will keep sending the responses to the client -- one request ; responses -- multiple
+
+share market -- live prices of various stocks 
+
+WhatsApp 
+	-- typing feature in WhatsApp; online 
+-- web sockets 
+		-- 2 way communication between server and client 
+		-- communication channel is going to kept open
+		-- server -- keep sending responses
+		-- send message to multiple recipients 
+
+REST API 
+	-- request what data we want
+	-- empId, empName, salary -- GET /employees
+	-- profile info, previous orders
+	-- GET request -- 2 request -- 2 response
+		-- profile info
+		-- previous orders
+		-- merge them and display to user
+graphql
+	-- request exactly what data we want -- schema of data which we require 
+	-- from where all i want the data -- send 1 request -- want profile data and previous orders
+	-- 1 req and 1 response 
+
+ Packages
+	-- predefined functionality
+	-- modularity, reusability
+	-- versions
+Virtual Environment
+	-- Isolated environment created for this particular project
+	-- Different versions for different projects
+	-- Share the project with different teams but with the same versions
+
+python code 
+n=10
+print(n) # 10
+
+n="hello"
+print(n) #hello
+
+python is weakly typed
+	-- for a var -- no need to associate a data type
+
+fast api
+	-- automatic doc generation -- based of open api standards
+	-- data validations can be done automatically
+	-- easy to create api 
+	-- fast development
+	-- endpoints , methods
+	-- async programming -- concurrently running multiple tasks
+
+
+
+
+fast api -- dependencies
+pydantic package 
+	-- strongly typed variables
+	-- validations and validations errors
+	-- request and response
+
+
+n:integer =10
+variablename:datatype
+
+data types 
+-- integer, bool, str,
+-- list,tuple,dict
+
+python --version
+3.11 or 3.13
+
+type hints in python -- giving the data types as part of variable 
+list -- 
+books :list[str] # collection of only string values
+
+class Products
+prodsArr:list[Products] # collection of only products objects
+
+
+multi threaded
+	-- thread pool -- multiple threads -- thread -- assigned a task -- execute the task entirely
+	-- make these threads work sequentially or parallelly
+parallel work
+	-- work faster -- perform the same operation using multiple threads;threads running parallelly
+async program
+	-- task is going to take some time(unpredictable) to complete -- async task
+	-- db query, read/write files, I/O operations 
+		-- file read
+			-- file1 -- 1 gb
+			-- file2 -- 10 gb
+			-- same time to read -- different
+			-- predict the exact time need for read op -- NO
+		-- db 
+			-- same query take same time for different executions -- NO 
+	-- client -- get request for all employees -- server -- connect with db and get the various emp details -- some time for the data to arrive -- emp details -- sent as response
+
+what python should do when async task is running-- python should continue with other work; some way by which python is notified that the data from the db is ready; once notified response should be sent to client
+
+hotel in a waiter analogy
+
+customer -- client
+waiter -- server
+ordered a soup -- get method 
+soup preparation -- async task -- some time to prepare the soup
+
+waiter place the order in kitchen
+kitchen -- will prepare the soup
+while the async task (preparing the soup) the waiter(server) can continue with other work(getting orders for other tables)
+
+when the soup is ready -- waiter(server) is notified;
+server will pick up the soup and give to the client -- response 
+
+
+in a hotel -- many waiters -- handle the request from diff clients -- parallel
+
+Event loop
+
+how does a coroutine run
+python -- single thread  -- main thread will only do all the tasks
+
+bigComputation -- take 10 secs and single thread will be utilised for this processing -- for these 10 secs, no other task can be done
+	-- blocking code
+
+greetAsync -- coroutine -- func with async keywork -- perform some async task
+asyncio.run(greetAsync()) -- NON BLOCKING CODE 
+	-- start execution line by line
+	-- print will be executed by main thread
+	-- await asyncio.sleep(2); // simulate a async task 
+	-- main thread has come across a async task 
+	-- main thread will push the async task to the event loop
+	-- event loop will execute the async task ; main thread is free to perform other operations
+	-- async task is done -- sleep of 2 seconds is over
+	-- main thread is notified that the async task is over 
+	-- once the main thread is free-- it will resume the execution of the function
+	-- is the main thread blocked because of async task -- NO 
+	
+	
+
+
+
+
+
+
+
+
+		

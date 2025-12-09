@@ -1,0 +1,199 @@
+-- Request object
+-- Response object
+-- Routing
+-- Environment variables
+-- Project structure
+-- Packages
+-- Validations
+	-- Basic
+	-- Schemas
+	-- Annotated
+	-- Custom Validations
+	-- Field level
+-- Examples
+	-- Filtering
+	-- Pagination
+	-- Sorting
+
+
+Fast Api
+	-- validations
+		-- type hints
+			-- added the data types 
+		-- Annotated
+
+1. path parameters
+	-- itemId 
+		-- can it be negative
+	-- age 
+		-- >0 and < 120
+
+Annotated 
+	-- used to add some metadata
+	-- path value, query params, body section -- based on requirements 
+	-- setup data type also
+	-- add some validations
+
+
+
+class Path(
+    default: Any = ...,
+    *,
+    default_factory: (() -> Any) | None = _Unset,
+    annotation: Any | None = None,
+    alias: str | None = None,
+    alias_priority: int | None = _Unset,
+    validation_alias: str | None = None,
+    serialization_alias: str | None = None,
+    title: str | None = None,
+    description: str | None = None,
+    gt: float | None = None,
+    ge: float | None = None,
+    lt: float | None = None,
+    le: float | None = None,
+    min_length: int | None = None,
+    max_length: int | None = None,
+    pattern: str | None = None,
+    regex: str | None = None,
+    discriminator: str | None = None,
+    strict: bool | None = _Unset,
+    multiple_of: float | None = _Unset,
+    allow_inf_nan: bool | None = _Unset,
+    max_digits: int | None = _Unset,
+    decimal_places: int | None = _Unset,
+    examples: List[Any] | None = None,
+    example: Any | None = _Unset,
+    openapi_examples: Dict[str, Example] | None = None,
+    deprecated: deprecated | str | bool | None = None,
+    include_in_schema: bool = True,
+    json_schema_extra: Dict[str, Any] | None = None,
+    **extra: Any
+)
+This class should generally not be initialized directly; instead, use the pydantic.fields.Field function or one of the constructor classmethods.
+
+examples:[{validExamples:"pending"},{invalidExamples:"PENDING"}]
+
+
+Questions:
+	1. Is the order of the various get important?
+		-- YES 
+			-- if they have the same starting path
+	2. 
+
+query params:
+items?category=electronics
+
+items?category=electronics&page=1
+
+Validations:
+	-- Number 
+		-- gt, lt, ge, le
+	-- String 
+		-- pattern, regex, min_length, max_length
+	-- bool
+	-- Set of values
+	-- Optional
+	-- default
+3 ways
+	-- Annotations
+	-- Schemas
+	-- Custom validations
+
+
+class Query(
+    default: Any = Undefined,
+    *,
+    default_factory: (() -> Any) | None = _Unset,
+    annotation: Any | None = None,
+    alias: str | None = None,
+    alias_priority: int | None = _Unset,
+    validation_alias: str | None = None,
+    serialization_alias: str | None = None,
+    title: str | None = None,
+    description: str | None = None,
+    gt: float | None = None,
+    ge: float | None = None,
+    lt: float | None = None,
+    le: float | None = None,
+    min_length: int | None = None,
+    max_length: int | None = None,
+    pattern: str | None = None,
+    regex: str | None = None,
+    discriminator: str | None = None,
+    strict: bool | None = _Unset,
+    multiple_of: float | None = _Unset,
+    allow_inf_nan: bool | None = _Unset,
+    max_digits: int | None = _Unset,
+    decimal_places: int | None = _Unset,
+    examples: List[Any] | None = None,
+    example: Any | None = _Unset,
+    openapi_examples: Dict[str, Example] | None = None,
+    deprecated: deprecated | str | bool | None = None,
+    include_in_schema: bool = True,
+    json_schema_extra: Dict[str, Any] | None = None,
+    **extra: Any
+)
+This class should generally not be initialized directly; instead, use the pydantic.fields.Field function or one of the constructor classmethods
+		
+https://www.amazon.in/s?k=mobiles&rh=p_123%3A46655%2Cp_n_g-1003492455111%3A81332994031&dc&crid=3OMDZNQEZP39L&qid=1765258548&rnid=44349045031&sprefix=mobiles%2Caps%2C247&ref=sr_nr_p_n_g-1003492455111_1&ds=v1%3A34Mc0v1yqceIGLwzq8SK13vM1kaQXKQNNjuji18pjes
+
+
+https://www.amazon.in/s?k=mobiles&rh=p_123%3A46655%2Cp_n_g-1003492455111%3A81332994031%2Cp_n_g-101015098008111%3A91805326031&dc&crid=3OMDZNQEZP39L&qid=1765258556&rnid=91805324031&sprefix=mobiles%2Caps%2C247&ref=sr_nr_p_n_g-101015098008111_2&ds=v1%3AGUwOHz0iH5cqklRn9aFiLxLyVIGadJwpTT%2BCt%2FPJrHU
+
+
+Why Schemas
+-- many query params
+-- some are optional and some are mandatory
+-- basic validations
+-- custom validations
+
+Schema class should always inherit from BaseModel
+	-- client -- add some queryparams to the path
+	-- query params are validated against the schema
+	-- multiple validations are done and they all have to pass for the function to be executed
+	-- if they fail -- 422 response is sent
+	-- if they pass -- query params are converted and stored in a dict in the var
+	-- process that dict
+	-- Seperation of concerns
+	-- Automatic serialisation and deserialisation
+
+POST request
+	-- any path params, query params -- NO
+	-- data only as part of body
+	-- validations of data coming as part of body
+	-- As per the schema
+
+
+
+
+1. Get all books
+2. Get a particular book
+3. Have a endpoint which allows to Filter the books by genre
+4. Create an endpoint that accepts search params using price, author and publication year
+5. Implement an Api endpoint that supports sorting by field
+	/books/sort/singleSort/?sortField=price&order=asc
+6. Implement an Api endpoint that supports sorting by multiple fields
+	/books/sort/multipleSort/?sortField=price:asc,genre:desc
+7. Implement an Api endpoint that inserts a new book -- post -- 
+8. Implement an Api endpoint such that there is atleast 1 author
+9. Implement an Api endpoint such that there is atleast 1 author and name is non empty string 
+10. Implement an Api endpoint such that each author is a registered user
+11. Update the price to a particular value of the book with a particular isbn 
+ PUT
+/books/{isbn}
+body -- new price
+response status code -- success, book not found
+
+
+
+
+Custom validators:
+	-- custom validation on basis of one field
+	-- custom validation on basis of multiple field
+	-- multiple custom validations
+
+
+
+
+
+

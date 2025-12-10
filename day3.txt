@@ -1,0 +1,170 @@
+Responses:
+	-- response object
+	-- status code -indicate the response status 
+	-- type of response data 
+		-- json(str, list, dict)
+		-- text
+		-- stream data 
+		-- images
+		-- files( .html -- index.html)
+		-- downloadable files 
+		-- error data
+	-- headers
+	-- tokens
+	-- redirect as part of response
+		-- register page --> submit button -> saved the data in db -> give confirmation --> redirect to login page 
+	
+
+fast api is dependent on 2 packages 
+	-- pydantic 
+		-- type hints
+		-- data validations
+		-- schema descriptions
+	-- starlette
+		-- web based work
+		-- request and response are of the starlette class
+JINJA template
+	-- template engine for sending dynamic files
+
+Dependency Injection
+
+Middleware
+
+Integrate with database:
+1. Install some modules
+2. Set up the db url
+3. Set up the session
+4. 
+
+
+Dependency Injection:
+	-- Common logic to be shared
+		-- param validation
+		-- fetch some data from db
+		-- common processing
+		-- authentication and authorisation
+		-- Complex operations
+	-- Add the dependency injection
+		-- as part of path operation -- for a specific path
+		-- global dependency
+			-- dependency as part of the entire app
+	-- Something which is callable
+		--  function
+		-- class which can be callable
+	-- Multiple DI
+		-- Nesting of DI's
+		-- Parallel DI
+	-- Cache copy of dependency
+
+
+
+Logging -- all the request hitting the endpoint -- global dependencies
+
+get request to /items/{itemId} -- return the particular item
+put request to /items/{itemId} -- update a particular item
+
+ItemId is sent as path params
+	-- validations 
+		-- alphanumeric, not null
+		-- minlength and max length
+		-- start with "item"
+	-- for the itemid -- fetch the corresponding item from db
+
+Dependency injection as part of path operation
+Dependency injection 
+	-- validation and fetch the data from db -- when -- before the function handler implementation
+	--close the db connection -- when -- response is sent to user ; after function handler implementation is over
+
+def validate_isbn(isbn: str) -> str:
+    if len(isbn) < 10 or len(isbn) > 13:
+        raise HTTPException(status_code=400, detail="ISBN must be between 10 and 13 characters")
+    return isbn
+
+
+
+
+@router.delete("/{isbn}")
+def delete_book(
+    isbn:str=Depends(validate_isbn)
+):     
+    #delete book with given isbn
+    for index, book in enumerate(books):
+        if book.isbn == isbn:
+            del books[index]
+            return {"detail": f"Book with {isbn} deleted successfully"}
+    raise HTTPException(
+        status_code = 404,
+        detail = f"Book with {isbn} not found"
+    )    
+
+#How does DI work
+#1. Client makes a delete request to the endpoint /{isbn} with an isbn value.
+#2. FastAPI sees that the delete_book function has a dependency on validate_isbn for the isbn parameter.
+#3. FastAPI calls the validate_isbn function with the provided isbn value.
+#4. If validate_isbn raises an HTTPException, FastAPI returns that error response to the client.
+#5. If validate_isbn returns a valid isbn, FastAPI passes that value to the delete_book function.
+#6. The delete_book function executes its logic to delete the book and returns the appropriate response.
+#7. FastAPI sends the final response back to the client.
+
+Dependencies 
+	-- Created using functions
+	-- Created using callable classes
+
+Class dependency
+	-- pass multiple query params -- YES
+	-- instances are created
+Function dependency 
+	-- pass multiple query params -- YES
+	-- functions are called
+
+
+
+
+when to use class dependencies and when to use functions
+	-- 
+
+caching of dependencies:
+use_cache:bool = true
+	-- First time is dependency is called -- run that dependency
+	-- Next time onwards from the same request if the dependency is called  -- cached copy of the output of running the dependency will be returned
+
+yield -- generators
+
+Database integration
+
+pip install sqlalchemy python-dotenv
+
+client -- connect to db server -- db server url
+
+Dev environment
+Staging environment
+Production environment
+
+Based on environment db url's will change 
+db url's -- dynamic based on environment
+db url -- outside the codebase ; but accessible inside the codebase
+
+secrets -- generate some tokens
+	-- cant store it inside the codebase but need to access the code
+sqlalchemy -- package used to integrate with various sql db; provided with fastapi
+
+1. Installed the various packages
+	pip install sqlalchemy python-dotenv
+2. Created the .env file at the root level and set up the DATABASE-URL
+3. Created the config.py in the core folder to set up some configurations
+	-- To fetch the data from .env file and store in app variables
+4. Created the engine and session object with the engine created. Session object is used to manage the sessions -- db/session.py
+5. Created the base class for the sqlalchemy models 
+	-- db/base.py
+6. 
+
+
+Middlewares
+Authentication and authorisation -- jwt
+
+Recap and Q&A section
+
+
+
+
+ 

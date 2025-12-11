@@ -1,0 +1,189 @@
+Security of an Application
+	-- Authentication
+		-- user is validated against the credentials
+	-- Authorisation
+		-- permission to access a particular resource by a authenticated user 
+	-- Encryption
+		-- encrypt the data and send it over the network
+		-- what
+			-- data protection
+			-- encrypt and decrypt
+		-- what all should be encryted
+			-- only sensitive data
+				-- passwords	
+				-- secure keys
+	-- CORS
+		--policy that controls which url can access the server URL
+		-- allow origin accept policy 
+		-- client server architecture -- enable the client url to access the server resources 
+	-- password 
+		-- directly store the password in the db -- NO
+		-- store the password securely in the db
+			-- mask; disadv -- very easy to break the logic
+			-- encrypt the passwords
+			-- hashing using bcrypt and passlib
+
+1. Installed the various packages
+	pip install sqlalchemy python-dotenv
+2. Created the .env file at the root level and set up the DATABASE-URL
+3. Created the config.py in the core folder to set up some configurations
+	-- To fetch the data from .env file and store in app variables
+4. Created the engine and session object with the engine created. Session object is used to manage the sessions -- db/session.py
+5. Created the base class for the sqlalchemy models 
+	-- db/base.py
+6. Created the models for the user data
+	name, email, id, hashed_password
+	In the models folder, in the userModels.py -- created the User model
+7. Install the package -- bcrypt
+pip install passlib[bcrypt] bcrypt=3.2.0
+8. /app/core/security.py
+	Utility functions to hash the password and verify the password
+9. Worked with the various endpoints
+	/auth/register -- post
+	/auth/login -- post
+10. In main.py , create all the tables
+Base.metadata.create_all(bind=engine)
+
+
+
+Middlewares
+	
+
+Where and when should the following tasks be done
+1. Create a log file with all the requests coming in to this api
+	-- Create a function which will add the incoming request to file
+	-- Call Function -- Before it reaches the appropriate endpoint
+2. Enable CORS
+	when 
+		-- Before it reaches the appropriate endpoint at the server side
+3. Create a log file with all the requests and response details coming in to this api
+	when 
+		--Before it reaches the appropriate endpoint
+		-- After the endpoint has got executed
+4. Global Error handling 
+	when 
+		-- before requests (validation of request)
+		-- after response (if there is any unhandled error)
+
+5. Authorisation
+	user has logged it 
+	protected routes -- check the token or check if user is logged in
+	when
+		-- Before it reaches the appropriate endpoint at the server side
+
+6. Rate limiting
+	restrict user can hit a endpoint only 5 times in 5 second
+
+7. Transformation of requests and response
+	--(set up the default response status code )
+	-- before request -- 
+	-- response after
+
+Middleware
+	-- function do some task
+	-- function access request and response objects
+	-- work like a generator function
+	-- yield to some other task and after some time comeback and resume the next set of operations after yield
+	-- Multiple middlewares
+		-- all the middlewares
+		-- order of middlewares 
+	-- Should do only one task
+	-- In built and custom middlewares
+
+
+JWT token -- json web token 
+Oauth -- paswordFlow
+Scopes -- RBAC
+
+Authentication
+	-- username and password
+JWT token
+	-- registered user --> login 
+		-- failed -- relogin
+		-- succeeded
+			-- as part of response -- send the jwt token and scopes(indicate the permissions for this role)
+	-- authenticated user 
+		-- any request
+			-- has to send the jwt token as part of request headers
+		-- token is not a part of header
+			-- not authorised
+		-- token is correct 
+			-- give access to resource
+	-- protected route
+		-- token
+	-- protected route -- restricted operations which can be performed by a few roles -- RBAC
+
+
+	
+Steps for adding jwt and oauth
+Install packages		
+pip install python-jose[cryptography]
+2. Set up the config variables in .env file
+3. Set up the various variables in /core/config/py
+4. Update the user class to have the role column /models/userModel
+5. Add schema for token and scopes and subclasses for users
+/model/token.py
+Updated /model/userModels.py
+6. Mapping between roles and scopes
+	Updated the core/security.py
+7. Check for authentication and authorisation
+	in /dependencies/apidependencies.py
+	-- extract the token
+	-- validate the token
+	-- check if the token has the required scope for this specific endpoint
+8. In routers/auth/
+	generated the token in /login post 
+
+
+https://www.jwt.io/introduction#what-is-json-web-token
+https://auth0.com/intro-to-iam/what-is-oauth-2
+
+
+
+Authentication 
+	Ways to do authentication
+		-- Username and password
+		-- More secure approach -- Username and password and jwt token
+	Authorisation 
+		-- Username and password and role field
+		-- More secure approach -- Username and password and jwt token and oauth2
+
+
+login --> username, password
+	-- validating username and password against the db
+	-- if validated , getting role of the logged user
+	-- from role -- what is the scopes this user has
+	-- generating a token jwt.encode  -- some info : username, scopes of this user, expiry time
+	-- token gets generated -- return the token as response
+
+/items 
+	-- get request 
+		-- Config set up of project -- all 3 can do read
+		check the role
+		get_current_user
+			passing the user credentials(username and password)
+			decode the token -- username and scope of this user
+			set of allowed scopes
+			Fn def -- 
+				username and password -- from the db get the role
+				role -- get the scopes
+				validating the scopes of this user with set of allowed scopes for the path
+				-- match -- allow the user to perform the op(authorisation) 
+
+	
+
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
